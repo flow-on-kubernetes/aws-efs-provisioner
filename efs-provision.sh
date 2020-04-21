@@ -42,9 +42,12 @@ function _create {
     else
         echo "throughput_mode = \"$THROUGHPUT_MODE\"" >> ./vars.tfvars
     fi
-    echo "throughput = \"$THROUGHPUT\"" >> ./vars.tfvars
-
-    if [[ -z $EFS_NAME ]] && [[ -z $VPC_ID ]] && [[ -z $REGION ]] && [[ -z $THROUGHPUT ]]
+    if [[ -z $THROUGHPUT ]]; then
+        echo "throughput = 1" >> ./vars.tfvars
+    else
+        echo "throughput = \"$THROUGHPUT\"" >> ./vars.tfvars
+    fi
+    if [[ -z $EFS_NAME ]] && [[ -z $VPC_ID ]] && [[ -z $REGION ]]
     then
         echo "Provide valid values"
         _usage
@@ -81,9 +84,13 @@ function _delete {
     else
         echo "throughput_mode = \"$THROUGHPUT_MODE\"" >> ./vars.tfvars
     fi
-    echo "throughput = \"$THROUGHPUT\"" >> ./vars.tfvars
+    if [[ -z $THROUGHPUT ]]; then
+        echo "throughput = 1" >> ./vars.tfvars
+    else
+        echo "throughput = \"$THROUGHPUT\"" >> ./vars.tfvars
+    fi
 
-    if [[ -z $EFS_NAME ]] && [[ -z $VPC_ID ]] && [[ -z $REGION ]] && [[ -z $THROUGHPUT ]]
+    if [[ -z $EFS_NAME ]] && [[ -z $VPC_ID ]] && [[ -z $REGION ]]
     then
         echo "Provide valid values"
         _usage
@@ -97,7 +104,7 @@ function _usage {
 
     printf "Script will be used to provision efs. \nIt will use aws secret key and secret access key stored in machine.\n
     usage:
-        ./efs-provision.sh --action <create|delete> --efs-name <name> --vpc-id <vpc-xxxxx> --region <region> --throughput <in mbps, Only of --throughput is provisioned> "
+        ./efs-provision.sh --action <create|delete> --efs-name <name> --vpc-id <vpc-xxxxx> --region <region>"
 }
 _parse_args() {
     if [ $# != 0 ]; then
