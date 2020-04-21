@@ -7,6 +7,9 @@ resource "aws_efs_file_system" "efs" {
   performance_mode                  = "${var.performance_mode}"
   provisioned_throughput_in_mibps   = "${var.throughput_mode == "provisioned" ? var.throughput : 0}"
   throughput_mode                   = "${var.throughput_mode}"
+  tags = {
+      Name = "${var.efs_name}"
+    }
 
 }
 

@@ -89,7 +89,7 @@ function _delete {
         _usage
     else 
             terraform init
-            terraform apply --var-file="vars.tfvars" --auto-approve
+            terraform destroy --var-file="vars.tfvars" --auto-approve
     fi
 }
 
